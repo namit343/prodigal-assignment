@@ -1,94 +1,109 @@
-# prodigal-assignment
+# Conversation Compliance & Quality Analyzer
 
-# Debt Collection Call Analysis Tool
-
-## 📖 Overview
-
-[cite_start]This project provides a comprehensive tool for analyzing audio conversations between debt collection agents and borrowers. [cite: 2] [cite_start]The primary goal is to automatically evaluate these conversations for **profanity**, **privacy compliance violations**, and key **call quality metrics** like overtalk and silence percentage. [cite: 3] [cite_start]The tool is built as a Streamlit application, allowing users to upload individual call transcripts in YAML format and analyze them using different methodologies. [cite: 4, 34, 36]
+This project analyzes debt collection call transcripts for **profanity**, **privacy/compliance violations**, and **call quality metrics** (silence & overtalk).  
+It supports both **regex-based pattern matching** and **LLM-based analysis**.
 
 ---
 
-## ✨ Features
-
-* [cite_start]**Profanity Detection**: Identifies calls containing profane language from either the agent or the borrower. [cite: 13]
-* [cite_start]**Privacy & Compliance Violation**: Detects instances where agents share sensitive account information *before* properly verifying the borrower's identity. [cite: 16, 17, 18]
-* **Call Quality Metrics**: Calculates and visualizes two key metrics:
-    * [cite_start]**Overtalk Percentage**: The percentage of the call where both parties are speaking simultaneously. [cite: 20]
-    * [cite_start]**Silence Percentage**: The percentage of the call where neither party is speaking. [cite: 21]
-* **Multiple Analysis Approaches**: For Profanity and Compliance detection, the application allows users to choose between:
-    * [cite_start]A fast and simple **Pattern Matching (Regex)** approach. [cite: 27]
-    * [cite_start]A more context-aware **Machine Learning (Fine-tuned LLM)** approach. [cite: 31]
-* [cite_start]**Interactive Web Application**: A user-friendly interface built with Streamlit for easy file uploads and analysis selection. [cite: 34]
-
----
-
-## 🛠️ Tech Stack
-
-* **Backend**: Python
-* **Web Framework**: Streamlit
-* **Data Handling**: PyYAML, Pandas
-* **NLP/ML**: Scikit-learn, Transformers (Hugging Face), NLTK, spaCy
-* **Pattern Matching**: `re` (Regex)
-* **Visualization**: Matplotlib, Seaborn, Plotly
+## 🚀 Features
+- **Profanity Detection**
+  - Detects if **agent** or **customer** used profane language.
+  - Implemented with regex (pattern matching) and LLM.
+- **Privacy & Compliance**
+  - Flags when agents disclose **sensitive financial/account info** before verifying identity.
+  - Implemented with regex (pattern matching) and LLM.
+- **Call Quality Metrics**
+  - Calculates **silence %** and **overtalk %** in calls.
+  - Displays bar chart visualizations.
+- **Streamlit App**
+  - Upload a `.json` conversation file.
+  - Dropdowns to select **Approach** (Pattern Matching / LLM) and **Analysis Type** (Profanity / Compliance / Metrics).
+  - Interactive output + visualization.
 
 ---
 
-## 🚀 Setup and Execution
-
-Follow these steps to set up and run the project on your local machine.
-
-### Prerequisites
-
-* Python 3.8+
-* pip (Python package installer)
-* Git
-
-### Installation & Setup
-
-1.  **Clone the repository:**
-    ```bash
-    git clone <your-repository-url>
-    cd <repository-name>
-    ```
-
-2.  **Create and activate a virtual environment (recommended):**
-    ```bash
-    # For macOS/Linux
-    python3 -m venv venv
-    source venv/bin/activate
-
-    # For Windows
-    python -m venv venv
-    .\venv\Scripts\activate
-    ```
-
-3.  **Install the required dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-4.  **Prepare the Data:**
-    * [cite_start]The project expects conversation data in YAML files, where the filename is the call ID. [cite: 6, 7]
-    * Place your YAML files inside a `data/` directory in the root of the project.
-
-### Running the Application
-
-1.  **Launch the Streamlit app:**
-    ```bash
-    streamlit run app.py
-    ```
-2.  Your web browser should open with the application running.
+## 🗂️ Project Structure
+```
+conversation-analyzer/
+│
+├── main.py          # Backend functions (pattern + LLM)
+├── app.py           # Streamlit frontend
+├── requirements.txt # Dependencies
+├── data/            # Folder containing JSON call transcripts
+└── README.md        # Documentation
+```
 
 ---
 
-## 🖥️ How to Use the App
+## ⚙️ Setup Instructions
 
-1.  [cite_start]**Upload a Call File**: Use the file uploader to select a single call conversation in `.yaml` format from your local machine. [cite: 36]
-2.  [cite_start]**Select Analysis Type**: Use the first dropdown to choose the entity you want to detect: **Profanity** or **Privacy & Compliance Violation**. [cite: 39]
-3.  [cite_start]**Select Approach**: Use the second dropdown to choose the detection method: **Pattern Matching** or **Machine Learning**. [cite: 38]
-4.  [cite_start]**View Results**: The application will process the file and output a flag indicating the presence or absence of the selected entity. [cite: 40]
-5.  [cite_start]**View Metrics**: The visualizations for overtalk and silence percentage will be displayed separately. [cite: 42]
+### 1. Clone the repository
+```bash
+git clone https://github.com/your-username/conversation-analyzer.git
+cd conversation-analyzer
+```
+
+### 2. Create and activate a virtual environment (Windows)
+```bash
+py -m venv .venv
+.\.venv\Scripts ctivate
+```
+
+### 3. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Run locally
+```bash
+py -m streamlit run app.py
+```
+App will open at [http://localhost:8501](http://localhost:8501).
 
 ---
 
-## 📁 Project Structure
+## ☁️ Deployment (Streamlit Cloud)
+1. Push repo to GitHub.  
+2. Go to [Streamlit Cloud](https://share.streamlit.io).  
+3. Deploy `app.py` as entry point.  
+4. Add your OpenAI API key in **App Secrets**:
+   ```toml
+   OPENAI_API_KEY="your_api_key_here"
+   ```
+
+---
+
+## 📊 Example Workflow
+- Upload a conversation JSON file.  
+- Select `Pattern Matching` + `Profanity Detection` → see if agent or customer used profanity.  
+- Select `Pattern Matching` + `Privacy & Compliance` → check for violations.  
+- Select `Call Metrics` → see silence/overlap percentages + chart.  
+- Switch to `LLM` approach to compare results.
+
+---
+
+## 🧠 Comparative Analysis (Summary)
+
+### Profanity Detection
+- Regex is reliable because profanity is explicit and has a finite vocabulary.  
+- LLM may overcomplicate, slower, and cost API credits.  
+- ✅ Recommendation: **Pattern Matching** is better for profanity.
+
+### Privacy & Compliance
+- Regex catches obvious disclosures (balance, account number, etc.) but may miss indirect/nuanced cases.  
+- LLM can interpret natural language better and detect subtle compliance risks.  
+- ✅ Recommendation: **LLM** is better for compliance in production.
+
+### Call Quality Metrics
+- Purely numeric (based on timestamps). Regex/ML not applicable.  
+- Deterministic calculation with silence and overlap detection.  
+- ✅ Recommendation: Use **deterministic computation** (no AI needed).
+
+---
+
+## 📌 Deliverables
+1. **GitHub Repository**  
+   - Includes backend (`main.py`), frontend (`app.py`), visualization, requirements, README.  
+
+2. **Technical Report**  
+   - Implementation explanation + recommendations.
